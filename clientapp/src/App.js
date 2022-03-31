@@ -5,55 +5,40 @@ export default class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { forecasts: [], loading: true };
+        this.state = { unpData: {}, loading: true };
     }
 
     componentDidMount() {
-        this.populateWeatherData();
-    }
+        this.fetchUnp();
+    }   
 
-    static renderForecastsTable(forecasts) {
+    static renderUnp(unp) {
         return (
-            <table className='table table-striped' aria-labelledby="tabelLabel">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {forecasts.map(forecast =>
-                        <tr key={forecast.date}>
-                            <td>{forecast.date}</td>
-                            <td>{forecast.temperatureC}</td>
-                            <td>{forecast.temperatureF}</td>
-                            <td>{forecast.summary}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-        );
+            <p>{ unp.vnaimp }</p>
+            )
     }
 
     render() {
         let contents = this.state.loading
-            ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-            : App.renderForecastsTable(this.state.forecasts);
+            ? <p><em>Загрузка...</em></p>
+            : App.renderUnp(this.state.unpData);
 
         return (
             <div>
-                <h1 id="tabelLabel" >Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <h1 id="tabelLabel" >Проверка УНП</h1>
                 {contents}
             </div>
         );
     }
 
-    async populateWeatherData() {
-        const response = await fetch('weatherforecast');
+    async fetchUnp() {
+        const response = await fetch('api/unp/getData?unp=123456789&type=json');
+        console.log(response);
+
         const data = await response.json();
-        this.setState({ forecasts: data, loading: false });
+
+        console.log("Obj: " + JSON.stringify(data));
+
+        this.setState({ unpData: data, loading: false });
     }
 }

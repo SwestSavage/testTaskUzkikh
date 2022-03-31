@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testTaskUzkikh", "testTaskUzkikh\testTaskUzkikh.csproj", "{6E29921A-E586-4708-9DC2-E45718E1CB95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "testTaskUzkikh", "testTaskUzkikh\testTaskUzkikh.csproj", "{6E29921A-E586-4708-9DC2-E45718E1CB95}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ClientApp", "ClientApp\ClientApp.esproj", "{63472797-9209-4ED2-8091-357933DBA29F}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ClientApp", "clientapp\ClientApp.esproj", "{63472797-9209-4ED2-8091-357933DBA29F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
