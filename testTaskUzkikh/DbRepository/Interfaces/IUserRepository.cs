@@ -4,7 +4,7 @@ namespace testTaskUzkikh.DbRepository.Interfaces
 {
     public interface IUserRepository
     {
-        Task AddNewAsync(User user);
+        Task AddNewAsync(string email);
         Task<User> GetByIdAsync(long id);
     }
 }

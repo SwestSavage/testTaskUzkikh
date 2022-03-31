@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using testTaskUzkikh.DbRepository.Implementations;
 using testTaskUzkikh.DbRepository.Interfaces;
+using testTaskUzkikh.Services;
+using testTaskUzkikh.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = new ConfigurationBuilder()
@@ -25,6 +27,12 @@ builder.Services.AddScoped<IUnpRepository>(
     provider => new UnpRepository(config.GetConnectionString("DefaultConnection"),
     provider.GetService<IRepositoryContextFactory>())
     );
+
+builder.Services.AddTransient<IMailService, MailService>();
+
+builder.Services.Configure<MailSettings>(config.GetSection("MailSettings"));
+
+builder.Services.AddHostedService<EmailSenderService>();
 
 var app = builder.Build();
 

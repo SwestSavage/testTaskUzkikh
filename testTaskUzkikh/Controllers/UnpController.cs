@@ -79,5 +79,28 @@ namespace testTaskUzkikh.Controllers
 
             return new JsonResult(new { UnpExist = exist});
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SubscribeToEmail(string email, List<long> unps)
+        {
+            if (!string.IsNullOrEmpty(email) && unps.Count > 0)
+            {
+                try
+                {
+                    await _userRepository.AddNewAsync(email);
+
+                    foreach (var u in unps)
+                    {
+                        await _unpRepository.UpdateUserIdAsync(u, email);
+                    }
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+            }
+
+            return Ok();
+        }
     }
 }

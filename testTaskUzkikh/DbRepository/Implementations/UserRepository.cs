@@ -10,16 +10,23 @@ namespace testTaskUzkikh.DbRepository.Implementations
         {
         }
 
-        public async Task AddNewAsync(User user)
+        public async Task AddNewAsync(string email)
         {
-            if (user is null)
+            if (email is null)
             {
-                throw new ArgumentNullException(nameof(user));
+                throw new ArgumentNullException(nameof(email));
             }
 
             using (var context = RepositoryContextFactory.CreateDbContext(ConnectionString))
             {
-                await context.Users.AddAsync(user);
+                if (!await context.Users.AnyAsync(u => u.Email == email))
+                {
+                    await context.Users.AddAsync(new User() { Email = email });
+                }
+                else
+                {
+                    throw new ArgumentException($"User with suggested email already exist");
+                }
 
                 await context.SaveChangesAsync();
             }

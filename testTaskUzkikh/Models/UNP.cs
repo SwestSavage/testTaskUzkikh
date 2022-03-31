@@ -13,6 +13,6 @@
         public string VKODS { get; set; }
         public DateTime? DLIKV { get; set; }
         public string? VLIKV { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }
