@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using testTaskUzkikh.DbRepository.Interfaces;
 using testTaskUzkikh.Models;
+using testTaskUzkikh.Helpers;
 
 namespace testTaskUzkikh.Controllers
 {
@@ -20,11 +21,13 @@ namespace testTaskUzkikh.Controllers
             _unpRepository = unpRepository;
         }
 
-        [HttpGet]
-        [Produces("application/xml")]
-        public async Task<IActionResult> GetData(long unp, string charset = "UTF-8", string type = "xml")
+        [HttpGet("getData")]
+        public async Task<IActionResult> GetData(long unp, string? charset, string? type)
         {
             UNP unpFromDb;
+
+            if (charset is null) charset = "UTF-8";
+            if (type is null) type = "xml";
 
             try
             {
@@ -39,13 +42,34 @@ namespace testTaskUzkikh.Controllers
                 return BadRequest(e.Message);
             }
 
+            var unpViewModel = new UnpViewModel
+            {
+                VUNP = unpFromDb.VUNP.ToString(),
+                VNAIMP = unpFromDb.VNAIMP,
+                VNAIMK = unpFromDb.VNAIMK,
+                DREG = unpFromDb.DREG.ToShortDateString(),
+                NMNS = unpFromDb.NMNS.ToString(),
+                VMNS = unpFromDb.VMNS,
+                CKODSOST = unpFromDb.CKODSOST.ToString(),
+                VKODS = unpFromDb.VKODS,
+                DLIKV = unpFromDb.DLIKV is null ? "" : unpFromDb.DLIKV.Value.ToShortDateString(),
+                VLIKV = unpFromDb.VLIKV ?? ""
+            };
+
             if (type == "json")
             {
-                return new JsonResult(unpFromDb);
+                var jsonResult = new JsonResult(unpViewModel);
+                jsonResult.ContentType = $"application/json; charset={charset}";
+
+                return jsonResult;
             }
 
-            return Ok(unpFromDb);
+            var result = new ContentResult();
+
+            result.Content = XmlSerializerHelper.SerializeInXmlString(unpViewModel);
+            result.ContentType = $"application/xml; charset={charset}";
+
+            return result;
         }
-      
     }
 }

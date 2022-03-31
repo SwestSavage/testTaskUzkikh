@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testTaskUzkikh", "testTaskUzkikh\testTaskUzkikh.csproj", "{6E29921A-E586-4708-9DC2-E45718E1CB95}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ClientApp", "ClientApp\ClientApp.esproj", "{63472797-9209-4ED2-8091-357933DBA29F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{6E29921A-E586-4708-9DC2-E45718E1CB95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E29921A-E586-4708-9DC2-E45718E1CB95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E29921A-E586-4708-9DC2-E45718E1CB95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63472797-9209-4ED2-8091-357933DBA29F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63472797-9209-4ED2-8091-357933DBA29F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63472797-9209-4ED2-8091-357933DBA29F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{63472797-9209-4ED2-8091-357933DBA29F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63472797-9209-4ED2-8091-357933DBA29F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63472797-9209-4ED2-8091-357933DBA29F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
