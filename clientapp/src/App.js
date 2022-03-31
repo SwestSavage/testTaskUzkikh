@@ -5,7 +5,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formValues: [{ unp: "", exist: "" }]
+            formValues: [{ unp: "", exist: "" }],
+            userEmail: ""
         };
         this.handleSubmit = this.handleSubmit.bind(this)
     }
@@ -15,6 +16,14 @@ export default class App extends React.Component {
         formValues[i][e.target.name] = e.target.value;
         formValues[i]["exist"] = this.checkIfUnpExist(i, e.target.value);
         this.setState({ formValues });
+    }
+
+    handleEmailChange(e) {
+        let formValues = this.state.formValues;
+        let email = e.target.value;
+
+        console.log(email);
+        this.setState({ formValues, email });
     }
 
     addFormFields() {
@@ -32,6 +41,7 @@ export default class App extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         alert(JSON.stringify(this.state.formValues));
+        alert(this.state.userEmail);
     }
 
     render() {
@@ -50,6 +60,8 @@ export default class App extends React.Component {
                         }
                     </div>
                 ))}
+                <label>Email</label>
+                <input type="text" name="userEmail" value={this.state.userEmail} onChange={e => this.handleEmailChange(e)} />
                 <div className="button-section">
                     <button className="button add" type="button" onClick={() => this.addFormFields()}>Add</button>
                     <button className="button submit" type="submit">Submit</button>

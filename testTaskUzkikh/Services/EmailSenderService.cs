@@ -33,13 +33,7 @@ namespace testTaskUzkikh.Services
                 );
             };
 
-            _timer = new Timer(
-                SendEmailWithUnpStatusAsync,
-                null,
-                TimeSpan.Zero,
-                TimeSpan.FromMinutes(1)
-                );
-
+            Task.Run(action);
             return Task.CompletedTask;
 
         }
