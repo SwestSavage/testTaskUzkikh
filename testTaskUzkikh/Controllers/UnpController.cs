@@ -71,5 +71,13 @@ namespace testTaskUzkikh.Controllers
 
             return result;
         }
+
+        [HttpGet("checkUnp")]
+        public async Task<IActionResult> CheckUnp(long unp)
+        {
+            var exist = await _unpRepository.CheckIfExistAsync(unp);
+
+            return new JsonResult(new { UnpExist = exist});
+        }
     }
 }
