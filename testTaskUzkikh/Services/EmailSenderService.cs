@@ -60,15 +60,19 @@ namespace testTaskUzkikh.Services
 
                 var unps = await unpRepository.GetAllWithAssignedUsersAsync();
 
-                int i = 0;
-                foreach (var unp in unps)
+                for (int i = 0; i < unps.Count; i++)
                 {
                     mailService.SendEmailAsync(new Email()
                     {
-                        ToEmail = unp.User.Email,
+                        ToEmail = unps[i].User.Email,
                         Subject = "UNP status",
-                        Body = $"Your UNP status: \nUNP: {unp.VUNP} \nStatus code: {unp.CKODSOST}\nStatus: {unp.VKODS}."
+                        Body = $"Your UNP status: \nUNP: {unps[i].VUNP} \nStatus code: {unps[i].CKODSOST}\nStatus: {unps[i].VKODS}."
                     });
+
+                    if (i > 100)
+                    {
+                        await Task.Delay(TimeSpan.FromMinutes(5));
+                    }
                 }
             }
         }
