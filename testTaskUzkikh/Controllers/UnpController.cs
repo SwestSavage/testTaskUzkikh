@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using testTaskUzkikh.DbRepository.Interfaces;
 using testTaskUzkikh.Models;
 using testTaskUzkikh.Helpers;
+using testTaskUzkikh.Services;
 
 namespace testTaskUzkikh.Controllers
 {
@@ -13,12 +14,15 @@ namespace testTaskUzkikh.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IUnpRepository _unpRepository;
+        private readonly IMailService _mailService;
 
         public UnpController(IUserRepository userRepository,
-            IUnpRepository unpRepository)
+            IUnpRepository unpRepository, 
+            IMailService mailService)
         {
             _userRepository = userRepository;
             _unpRepository = unpRepository;
+            _mailService = mailService;
         }
 
         [HttpGet("getData")]
@@ -108,6 +112,6 @@ namespace testTaskUzkikh.Controllers
             if (string.IsNullOrEmpty(model.Email)) return BadRequest(model.Email);
 
             return BadRequest(model.Unps);
-        }
+        }        
     }
 }

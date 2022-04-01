@@ -54,20 +54,42 @@ namespace testTaskUzkikh.Services
 
                 var unps = await unpRepository.GetAllWithAssignedUsersAsync();
 
-                for (int i = 0; i < unps.Count; i++)
+                if (unps.Count > 100)
                 {
-                    mailService.SendEmailAsync(new Email()
-                    {
-                        ToEmail = unps[i].User.Email,
-                        Subject = "UNP status",
-                        Body = $"Your UNP status: \nUNP: {unps[i].VUNP} \nStatus code: {unps[i].CKODSOST}\nStatus: {unps[i].VKODS}."
-                    });
+                    await SendEmailAboutStatusOfUnpsAsync(unps.Take(100).ToArray(), mailService);
 
-                    if (i > 100)
-                    {
-                        await Task.Delay(TimeSpan.FromMinutes(5));
-                    }
+                    await Task.Delay(TimeSpan.FromMinutes(5));
+
+                    await SendEmailAboutStatusOfUnpsAsync(unps.Skip(100).ToArray(), mailService);
                 }
+                else
+                {
+                    await SendEmailAboutStatusOfUnpsAsync(unps.ToArray(), mailService);
+                }
+            }
+        }
+
+        private async Task SendEmailAboutStatusOfUnpsAsync(UNP[] unps, IMailService mailService)
+        {
+            for(int i = 0; i < unps.Length; i++)
+            {
+                string adding = string.Empty;
+
+                if (unps[i].DLIKV is not null)
+                {
+                    adding = $"<p><strong>Дата изменения состояния плательщика: </strong>{unps[i].DLIKV.Value.ToShortDateString()}</p><p><strong>Пичина изменения состояния плательщика: </strong>{unps[i].VLIKV}</p>";
+                }
+                else
+                {
+                    adding = "<p><strong>Состояние плательщика не менялось.</strong></p>";
+                }
+
+                await mailService.SendEmailAsync(new Email()
+                {
+                    ToEmail = unps[i].User.Email,
+                    Subject = "Статус УНП",
+                    Body = $"<h2>Статус Вашего УНП:</h2> <p><strong>УНП:</strong> {unps[i].VUNP}</p><p><strong>Код статуса:</strong> {unps[i].CKODSOST}</p><p><strong>Статус:</strong> {unps[i].VKODS}.</p>" + adding
+                });
             }
         }
     }
