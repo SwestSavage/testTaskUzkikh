@@ -24,6 +24,15 @@ body {
         border: 1px solid #ddd;
     }
 
+input {
+    vertical-align: middle;
+    margin: 5px 10px 5px 0;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    width: 200px;
+}
+
 .button-section {
     margin: 3%;
 }
@@ -47,3 +56,22 @@ body {
     .remove:hover {
         background-color: rgb(187, 43, 43);
     }
+
+.container {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+TABLE {
+    border-collapse: collapse; /* ”бираем двойные линии между €чейками */
+    text-align: center;
+}
+
+TD, TH {
+    width: 210px;
+}
+
+TH {
+    background: #b0e0e6; /* ÷вет фона */
+}

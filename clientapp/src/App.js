@@ -42,34 +42,54 @@ export default class App extends React.Component {
         let unps = this.state.formValues.map(item => item.unp);
         let email = this.state.user.email;
 
-        //alert(JSON.stringify({ unps, email }));
-
         this.sendDataToServer({ unps, email });
     }
 
     render() {
 
-        return (
-            <form onSubmit={this.handleSubmit}>
+        return (               
+            <form onSubmit={this.handleSubmit} className="container">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Введите УНП:</td>
+                            <td>Есть в БД:</td>
+                            <td>Нет в БД:</td>
+                        </tr>
+                    </thead>
+                    <tbody>
                 {this.state.formValues.map((element, index) => (
-                    <div className="form-inline" key={index}>
-                        <label>Unp</label>
-                        <input type="number" name="unp" value={element.unp || ""} onChange={e => this.handleChange(index, e)} />
-                        <label>Unp exist in db: {this.state.formValues[index]["exist"] === true ? "Yes" : "No"}</label>
-                        {
-                            index ?
-                                <button type="button" className="button remove" onClick={() => this.removeFormFields(index)}>Remove</button>
-                                : null
-                        }
-                    </div>
+                    <tr  key={index}>
+                        <td>
+                            <input type="number" name="unp" value={element.unp || ""} onChange={e => this.handleChange(index, e)} />
+                        </td>
+                        <td>
+                            {this.state.formValues[index]["exist"] === true ? <strong>+</strong> : null}
+                        </td>
+                        <td>
+                            {this.state.formValues[index]["exist"] === false ? <strong>-</strong> : ""}
+                        </td>
+                        
+                            {
+                                index ?
+                                <td><button type="button" className="button remove" onClick={() => this.removeFormFields(index)}>Убрать</button></td>
+                                    : null
+                            }
+                        
+                    </tr>
                 ))}
-                <label>Email</label>
-                <input type="text" name="userEmail" value={this.state.user.email} onChange={e => this.handleEmailChange(e.target.value)} />
-                <div className="button-section">
-                    <button className="button add" type="button" onClick={() => this.addFormFields()}>Add</button>
-                    <button className="button submit" type="submit">Submit</button>
-                </div>
+                    </tbody>
+                    </table>
+                    <div className="form-inline">
+                        <label>Email</label>
+                        <input type="text" name="userEmail" className="form-inline" value={this.state.user.email} onChange={e => this.handleEmailChange(e.target.value)} />
+                    </div>
+                    <div className="button-section">
+                        <button className="button add" type="button" onClick={() => this.addFormFields()}>Добавить поле для УНП</button>
+                        <button className="button submit" type="submit">Подписаться на отправку Email со статусом УНП</button>
+                    </div>                       
             </form>
+
         );
     }
 
@@ -93,6 +113,6 @@ export default class App extends React.Component {
         };
 
         const response = await fetch('api/unp/postData', options);
-        alert(response.status);
+        console.log(response.status);
     }
 }
