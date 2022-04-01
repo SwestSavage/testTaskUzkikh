@@ -6,5 +6,7 @@ namespace testTaskUzkikh.DbRepository.Interfaces
     {
         Task AddNewAsync(string email);
         Task<User> GetByIdAsync(long id);
+
+        Task<bool> CheckIfExist(string email);
     }
 }

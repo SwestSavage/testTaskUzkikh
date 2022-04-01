@@ -48,5 +48,18 @@ namespace testTaskUzkikh.DbRepository.Implementations
 
             return user;
         }
+
+        public async Task<bool> CheckIfExist(string email)
+        {
+            using (var context = RepositoryContextFactory.CreateDbContext(ConnectionString))
+            {
+                if (await context.Users.AnyAsync(u => u.Email == email))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

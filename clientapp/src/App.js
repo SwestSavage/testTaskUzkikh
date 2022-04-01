@@ -6,7 +6,7 @@ export default class App extends React.Component {
         super(props)
         this.state = {
             formValues: [{ unp: "", exist: "" }],
-            userEmail: ""
+            user: {email: ""}
         };
         this.handleSubmit = this.handleSubmit.bind(this)
     }
@@ -16,14 +16,6 @@ export default class App extends React.Component {
         formValues[i][e.target.name] = e.target.value;
         formValues[i]["exist"] = this.checkIfUnpExist(i, e.target.value);
         this.setState({ formValues });
-    }
-
-    handleEmailChange(e) {
-        let formValues = this.state.formValues;
-        let email = e.target.value;
-
-        console.log(email);
-        this.setState({ formValues, email });
     }
 
     addFormFields() {
@@ -38,10 +30,21 @@ export default class App extends React.Component {
         this.setState({ formValues });
     }
 
+    handleEmailChange(value) {
+        let formValues = this.state.formValues;
+
+        this.setState({ formValues, user: { email: value } });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
-        alert(JSON.stringify(this.state.formValues));
-        alert(this.state.userEmail);
+
+        let unps = this.state.formValues.map(item => item.unp);
+        let email = this.state.user.email;
+
+        //alert(JSON.stringify({ unps, email }));
+
+        this.sendDataToServer({ unps, email });
     }
 
     render() {
@@ -61,7 +64,7 @@ export default class App extends React.Component {
                     </div>
                 ))}
                 <label>Email</label>
-                <input type="text" name="userEmail" value={this.state.userEmail} onChange={e => this.handleEmailChange(e)} />
+                <input type="text" name="userEmail" value={this.state.user.email} onChange={e => this.handleEmailChange(e.target.value)} />
                 <div className="button-section">
                     <button className="button add" type="button" onClick={() => this.addFormFields()}>Add</button>
                     <button className="button submit" type="submit">Submit</button>
@@ -74,13 +77,22 @@ export default class App extends React.Component {
         const response = await fetch('api/unp/checkUnp?unp=' + unpNum);
         const data = await response.json();
 
-        console.log(JSON.stringify(data));
-
         let formValues = this.state.formValues;
         formValues[i]["exist"] = data.unpExist;
 
         this.setState({ formValues });
 
         return data;
+    }
+
+    async sendDataToServer(data) {
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        };
+
+        const response = await fetch('api/unp/postData', options);
+        alert(response.status);
     }
 }

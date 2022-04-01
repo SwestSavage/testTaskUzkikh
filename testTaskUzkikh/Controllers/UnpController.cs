@@ -80,27 +80,34 @@ namespace testTaskUzkikh.Controllers
             return new JsonResult(new { UnpExist = exist});
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SubscribeToEmail(string email, List<long> unps)
+        [HttpPost("PostData")]
+        public async Task<IActionResult> SubscribeToEmail([FromBody] UnpSubscribeViewModel model)
         {
-            if (!string.IsNullOrEmpty(email) && unps.Count > 0)
+            if (!string.IsNullOrEmpty(model.Email) && model.Unps.Count > 0)
             {
-                try
-                {
-                    await _userRepository.AddNewAsync(email);
 
-                    foreach (var u in unps)
+                if (!await _userRepository.CheckIfExist(model.Email))
+                {
+                    await _userRepository.AddNewAsync(model.Email);
+                }
+                try
+                {                    
+                    foreach (var u in model.Unps)
                     {
-                        await _unpRepository.UpdateUserIdAsync(u, email);
+                        await _unpRepository.UpdateUserIdAsync(u, model.Email);
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    return BadRequest(e.Message);
+                    return NoContent();
                 }
+
+                return Ok();
             }
 
-            return Ok();
+            if (string.IsNullOrEmpty(model.Email)) return BadRequest(model.Email);
+
+            return BadRequest(model.Unps);
         }
     }
 }
